@@ -1,46 +1,24 @@
-import { useMemo, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Send, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Send } from 'lucide-react';
 
 type Msg = { id: string; role: 'user' | 'ai'; text: string; ts: string };
 
 export function ChatHomePage() {
   const [value, setValue] = useState('');
-  const [messages, setMessages] = useState<Msg[]>(() => [
-    {
-      id: 'm1',
-      role: 'ai',
-      text: 'Hi! I’m Griid AI. Ask me anything—or invite friends to earn rewards.',
-      ts: new Date().toLocaleTimeString(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Msg[]>([]);
 
   const canSend = value.trim().length > 0;
-
-  const header = useMemo(
-    () => (
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <div className="text-sm font-medium text-gray-700">Invite your friend</div>
-          <div className="text-xs text-gray-500">Earn tiered rewards (1 / 3 / 5 / 10 referrals)</div>
-        </div>
-        <Button asChild className="bg-gradient-to-r from-[#7c5cff] to-[#7337ff] text-white shadow-lg shadow-purple-500/25">
-          <Link to="/referral">
-            <Sparkles className="h-4 w-4 mr-2" />
-            Referral
-          </Link>
-        </Button>
-      </div>
-    ),
-    []
-  );
+  const isEmpty = messages.length === 0;
 
   const send = () => {
     if (!canSend) return;
     const now = new Date();
-    const userMsg: Msg = { id: `u_${now.getTime()}`, role: 'user', text: value.trim(), ts: now.toLocaleTimeString() };
+    const userMsg: Msg = {
+      id: `u_${now.getTime()}`,
+      role: 'user',
+      text: value.trim(),
+      ts: now.toLocaleTimeString(),
+    };
     setMessages((prev) => [...prev, userMsg]);
     setValue('');
 
@@ -48,60 +26,73 @@ export function ChatHomePage() {
     const aiMsg: Msg = {
       id: `a_${aiNow.getTime()}`,
       role: 'ai',
-      text: 'Got it. If you want rewards, open the Referral tab above and share your link.',
+      text: `Got it! I'll process your spatial data request. You can also invite friends via the Refer & Earn button to unlock Pro features.`,
       ts: aiNow.toLocaleTimeString(),
     };
-    setTimeout(() => setMessages((prev) => [...prev, aiMsg]), 350);
+    setTimeout(() => setMessages((prev) => [...prev, aiMsg]), 400);
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-6">
-      <div className="rounded-2xl border bg-white shadow-sm">
-        <div className="border-b p-4">{header}</div>
+    <div className="chat-main">
+      {/* Top bar with Show Map */}
+      <div className="chat-topbar">
+        <button className="chat-show-map-btn">Show Map</button>
+      </div>
 
-        <div className="h-[70vh] overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-white to-purple-50/40">
-          {messages.map((m) => (
-            <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-sm ${
-                  m.role === 'user'
-                    ? 'bg-gradient-to-r from-[#7c5cff] to-[#7337ff] text-white'
-                    : 'bg-white border text-gray-900'
-                }`}
-              >
-                <div className="whitespace-pre-wrap">{m.text}</div>
-                <div className={`mt-1 text-[11px] ${m.role === 'user' ? 'text-white/70' : 'text-gray-400'}`}>
-                  {m.ts}
+      {/* Messages area or empty state */}
+      <div className="chat-messages-area">
+        {isEmpty ? (
+          <div className="chat-empty-state">
+            {/* Globe/Brain icon */}
+            <div className="chat-globe-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="20" stroke="#2b8a8a" strokeWidth="2.5" opacity="0.3" />
+                <circle cx="24" cy="24" r="14" stroke="#2b8a8a" strokeWidth="2" />
+                <path d="M10 24h28M24 4c4 5 6.5 12 6.5 20s-2.5 15-6.5 20c-4-5-6.5-12-6.5-20s2.5-15 6.5-20z" stroke="#2b8a8a" strokeWidth="1.8" fill="none" />
+                <ellipse cx="24" cy="24" rx="20" ry="8" stroke="#2b8a8a" strokeWidth="1.5" opacity="0.5" />
+              </svg>
+            </div>
+            <h1 className="chat-empty-title">Simplifying Spatial Engineering</h1>
+            <p className="chat-empty-subtitle">Describe a spatial task to get started.</p>
+          </div>
+        ) : (
+          <div className="chat-messages-list">
+            {messages.map((m) => (
+              <div key={m.id} className={`chat-msg ${m.role === 'user' ? 'chat-msg--user' : 'chat-msg--ai'}`}>
+                <div className={`chat-msg-bubble ${m.role === 'user' ? 'chat-msg-bubble--user' : 'chat-msg-bubble--ai'}`}>
+                  <div className="chat-msg-text">{m.text}</div>
+                  <div className={`chat-msg-ts ${m.role === 'user' ? 'chat-msg-ts--user' : ''}`}>{m.ts}</div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t p-3">
-          <div className="flex gap-2">
-            <Input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') send();
-              }}
-              placeholder="Type your message…"
-              className="h-12"
-            />
-            <Button
-              onClick={send}
-              disabled={!canSend}
-              className="h-12 bg-gradient-to-r from-[#7c5cff] to-[#7337ff] text-white"
-            >
-              <Send className="h-4 w-4 mr-2" />
-              Send
-            </Button>
+            ))}
           </div>
-          <div className="mt-2 text-xs text-gray-500">This is a UI mock chat; backend AI not wired yet.</div>
+        )}
+      </div>
+
+      {/* Bottom input bar */}
+      <div className="chat-input-area">
+        <div className="chat-input-container">
+          <button className="chat-behind-prompt-btn">
+            <span className="chat-behind-dot" />
+            Behind the Prompt
+          </button>
+          <input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
+            placeholder="Enter your prompt (type 'file:', 'workflow:' or 'tool:' to search)"
+            className="chat-input"
+          />
+          <button
+            onClick={send}
+            disabled={!canSend}
+            className="chat-send-btn"
+          >
+            <Send size={18} />
+          </button>
         </div>
+        <p className="chat-disclaimer">GriidAI can make mistakes. Consider checking important information.</p>
       </div>
     </div>
   );
 }
-

@@ -1,24 +1,32 @@
+import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { TopBar } from '@/components/TopBar';
+import { Sidebar } from '@/components/Sidebar';
+import { RightToolbar } from '@/components/RightToolbar';
+import { ReferralModal } from '@/components/ReferralModal';
 import { ChatHomePage } from '@/pages/ChatHomePage';
-import { ReferralPage } from '@/pages/ReferralPage';
 import { SignupPageNew } from '@/pages/SignupPageNew';
 
 function App() {
+  const [referralOpen, setReferralOpen] = useState(false);
+
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-background font-sans antialiased">
-        <TopBar />
-        <main>
+      <div className="app-layout">
+        <Sidebar onOpenReferral={() => setReferralOpen(true)} />
+
+        <div className="app-content">
           <Routes>
             <Route path="/" element={<ChatHomePage />} />
-            <Route path="/referral" element={<ReferralPage />} />
             <Route path="/signup" element={<SignupPageNew />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </main>
+        </div>
+
+        <RightToolbar />
+
+        <ReferralModal open={referralOpen} onClose={() => setReferralOpen(false)} />
         <Toaster position="top-right" />
       </div>
     </AuthProvider>
