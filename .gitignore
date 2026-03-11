@@ -1,0 +1,22 @@
+# .gitignore for GriidAi Referral Program
+
+# Node
+app/node_modules/
+app/dist/
+app/.env
+
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/dev.db
+backend/griidai.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
