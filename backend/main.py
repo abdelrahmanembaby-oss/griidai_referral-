@@ -1,12 +1,11 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from starlette.middleware.sessions import SessionMiddleware
 import uvicorn
 
 from app.core.config import settings
 from app.core.db import engine, Base
-from app.api import referral, auth, project, compute
+from app.api import referral, auth, project, compute, imagery
 
 print("DATABASE_URL=", settings.DATABASE_URL)
 app = FastAPI(
@@ -15,13 +14,10 @@ app = FastAPI(
     openapi_prefix=settings.API_PREFIX,
 )
 
-# Needed for OAuth state/session
-app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
-
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"http://localhost(:\d+)?",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,6 +28,7 @@ app.include_router(auth.router, prefix=settings.API_PREFIX)
 app.include_router(referral.router, prefix=settings.API_PREFIX)
 app.include_router(project.router, prefix=settings.API_PREFIX)
 app.include_router(compute.router, prefix=settings.API_PREFIX)
+app.include_router(imagery.router, prefix=settings.API_PREFIX)
 
 @app.on_event("startup")
 async def startup_event():

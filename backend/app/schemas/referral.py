@@ -29,4 +29,5 @@ class ReferralOut(BaseModel):
     created_at: datetime
     qualified_at: Optional[datetime]
 
-    model_config = {"from_attributes": True}
+    class Config:
+        orm_mode = True

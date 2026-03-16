@@ -7,6 +7,7 @@ import { RightToolbar } from '@/components/RightToolbar';
 import { ReferralModal } from '@/components/ReferralModal';
 import { ChatHomePage } from '@/pages/ChatHomePage';
 import { SignupPageNew } from '@/pages/SignupPageNew';
+import { EarthExplorerPage } from '@/pages/EarthExplorerPage';
 
 function App() {
   const [referralOpen, setReferralOpen] = useState(false);
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ChatHomePage />} />
             <Route path="/signup" element={<SignupPageNew />} />
+            <Route path="/explorer" element={<EarthExplorerPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

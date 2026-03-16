@@ -1,7 +1,8 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, String, DateTime, ForeignKey, Uuid
+from sqlalchemy import Column, String, DateTime, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
 from ..core.db import Base
@@ -10,12 +11,10 @@ from ..core.db import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = Column(String, unique=True, index=True, nullable=False)
-    password_hash = Column(String, nullable=True)
-    google_sub = Column(String, unique=True, index=True, nullable=True)
     referral_code = Column(String, unique=True, index=True, nullable=False)
-    referred_by_user_id = Column(Uuid(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    referred_by_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     total_credits = Column(String, default="0")
     plan_type = Column(String, default="free")
     device_fingerprint = Column(String, nullable=True)

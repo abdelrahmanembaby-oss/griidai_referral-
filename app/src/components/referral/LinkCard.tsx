@@ -1,5 +1,5 @@
 import React from "react";
-import { ClipboardDocumentIcon, ShareIcon } from "@heroicons/react/24/outline";
+import { ClipboardDocumentIcon, ShareIcon } from "@heroicons/react/outline";
 
 interface Props {
   link: string;

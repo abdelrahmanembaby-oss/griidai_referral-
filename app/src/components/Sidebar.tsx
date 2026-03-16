@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, MoreHorizontal, Settings, Copy } from 'lucide-react';
+import { Plus, MoreHorizontal, Settings, Copy, Globe } from 'lucide-react';
 
 type SidebarProps = {
   onOpenReferral: () => void;
@@ -8,6 +9,9 @@ type SidebarProps = {
 
 export function Sidebar({ onOpenReferral }: SidebarProps) {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isExplorer = location.pathname === '/explorer';
   const [sessions] = useState([
     { id: '1', title: 'New Session', active: true },
     { id: '2', title: 'New Session', active: false },
@@ -31,6 +35,17 @@ export function Sidebar({ onOpenReferral }: SidebarProps) {
           <Copy size={16} />
         </button>
       </div>
+
+      {/* New Chat */}
+      {/* Earth Explorer */}
+      <button
+        className={`sidebar-new-chat ${isExplorer ? 'sidebar-new-chat--active' : ''}`}
+        onClick={() => navigate(isExplorer ? '/' : '/explorer')}
+        style={isExplorer ? { borderColor: 'var(--griid-teal)', color: 'var(--griid-teal)', background: 'var(--griid-teal-glow)' } : {}}
+      >
+        <Globe size={16} />
+        <span>{isExplorer ? 'Back to Chat' : 'Earth Explorer'}</span>
+      </button>
 
       {/* New Chat */}
       <button className="sidebar-new-chat">

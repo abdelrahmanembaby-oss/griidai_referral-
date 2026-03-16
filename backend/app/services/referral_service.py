@@ -11,54 +11,29 @@ from ..models.reward_log import ReferralRewardLog
 from ..schemas.stats import ReferralStats
 from .anti_abuse import is_suspicious
 from ..core.db import AsyncSessionLocal
-from ..core.security import hash_password
-from ..core.config import settings
 
 
-async def _generate_unique_referral_code(session: AsyncSession) -> str:
-    # 6 chars is convenient, but we still need a uniqueness loop.
-    for _ in range(20):
-        code = uuid.uuid4().hex[:6].upper()
-        existing = await session.execute(select(User.id).where(User.referral_code == code))
-        if not existing.scalar_one_or_none():
-            return code
-    # fallback: longer code if unlucky collisions
-    return uuid.uuid4().hex[:10].upper()
-
-
-async def create_user(
-    session: AsyncSession,
-    email: str,
-    password: Optional[str] = None,
-    google_sub: Optional[str] = None,
-    referral_code: Optional[str] = None,
-    device_fp: Optional[str] = None,
-    ip_address: Optional[str] = None,
-) -> User:
-    code = await _generate_unique_referral_code(session)
+async def create_user(session: AsyncSession, email: str, referral_code: Optional[str] = None,
+                      device_fp: Optional[str] = None, ip_address: Optional[str] = None) -> User:
+    # generate referral code
+    code = uuid.uuid4().hex[:6].upper()
     referred_by = None
     if referral_code:
         stmt = select(User).where(User.referral_code == referral_code)
         res = await session.execute(stmt)
         referrer = res.scalar_one_or_none()
         if referrer:
-            # block self-referral
-            if referrer.email.lower() == email.lower():
-                referred_by = None
+            # anti-abuse check
+            if is_suspicious(referrer, email, ip_address, device_fp):
+                # create user but mark referral rejected later
+                referred_by = referrer.id
             else:
-                # anti-abuse check
-                if is_suspicious(referrer, email, ip_address, device_fp):
-                    # create user but keep attribution; higher-level logic can reject/flag later
-                    referred_by = referrer.id
-                else:
-                    referred_by = referrer.id
+                referred_by = referrer.id
         else:
             referred_by = None
 
     new_user = User(
         email=email,
-        password_hash=hash_password(password) if password else None,
-        google_sub=google_sub,
         referral_code=code,
         referred_by_user_id=referred_by,
         device_fingerprint=device_fp,
@@ -81,25 +56,17 @@ async def create_user(
 
 
 async def get_referral_link(user: User) -> str:
-    base = (settings.FRONTEND_URL or "https://app.griidai.com").rstrip("/")
-    return f"{base}/signup?ref={user.referral_code}"
+    return f"https://app.griidai.com/signup?ref={user.referral_code}"
 
 
-try:
-    from ..core.redis_client import redis  # type: ignore
-except Exception:  # pragma: no cover
-    redis = None  # type: ignore
+from ..core.redis_client import redis
 
 
 async def get_stats(user_id: str, session: AsyncSession) -> ReferralStats:
     cache_key = f"referral_stats:{user_id}"
-    if redis is not None:
-        try:
-            cached = await redis.get(cache_key)
-            if cached:
-                return ReferralStats.model_validate_json(cached)
-        except Exception:
-            pass
+    cached = await redis.get(cache_key)
+    if cached:
+        return ReferralStats.parse_raw(cached)
 
     total = await session.scalar(
         select(func.count(Referral.id)).where(Referral.referrer_user_id == user_id)
@@ -133,33 +100,8 @@ async def get_stats(user_id: str, session: AsyncSession) -> ReferralStats:
         next_reward_tier=next_tier,
         progress_percent=progress,
     )
-    if redis is not None:
-        try:
-            await redis.set(cache_key, stats.model_dump_json(), ex=300)  # cache 5 minutes
-        except Exception:
-            pass
+    await redis.set(cache_key, stats.json(), ex=300)  # cache 5 minutes
     return stats
-
-
-TIERS = [
-    {"referrals": 1, "reward": "1 week Pro", "key": "tier_1"},
-    {"referrals": 3, "reward": "$50 credits", "key": "tier_3"},
-    {"referrals": 5, "reward": "1 month Pro", "key": "tier_5"},
-    {"referrals": 10, "reward": "Early feature access badge", "key": "tier_10"},
-]
-
-
-def compute_tiers(referral_count: int):
-    tiers = []
-    for t in TIERS:
-        tiers.append(
-            {
-                **t,
-                "unlocked": referral_count >= t["referrals"],
-                "progress": min(referral_count, t["referrals"]),
-            }
-        )
-    return tiers
 
 
 async def list_referrals(user_id: str, session: AsyncSession):
