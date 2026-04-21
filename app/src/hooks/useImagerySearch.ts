@@ -35,7 +35,14 @@ export function useImagerySearch() {
   }, []);
 
   const handleSearch = useCallback(
-    async (filters: { startDate: string; endDate: string; maxCloudCover: number; dataset: string }) => {
+    async (filters: {
+      startDate: string;
+      endDate: string;
+      maxCloudCover: number;
+      dataset: string;
+      provider?: string;
+      collection?: string;
+    }) => {
       if (!selectedLocation) {
         setError('Select a location first');
         return;
@@ -44,9 +51,17 @@ export function useImagerySearch() {
       setError(null);
       try {
         const [south, north, west, east] = selectedLocation.boundingBox;
-        const searchParams = { ...filters, south, north, west, east, startingNumber: 1, maxResults: 50 };
+        const searchParams = {
+          ...filters,
+          south,
+          north,
+          west,
+          east,
+          startingNumber: 1,
+          maxResults: 50,
+        };
         setLastFilters(searchParams);
-        
+
         const response = await searchImagery(searchParams);
         if (response.error) {
           setError(response.error);
@@ -70,7 +85,7 @@ export function useImagerySearch() {
     try {
       const nextStart = imageryResults.length + 1;
       const response = await searchImagery({ ...lastFilters, startingNumber: nextStart });
-      
+
       if (response.error) {
         setError(response.error);
       } else {

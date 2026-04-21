@@ -1,0 +1,75 @@
+Collecting fastapi==0.104.1 (from -r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/f3/4f/0ce34195b63240b6693086496c9bab4ef23999112184399a3e88854c7674/fastapi-0.104.1-py3-none-any.whl
+Collecting uvicorn==0.24.0 (from -r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/ed/0c/a9b90a856bbdd75bf71a1dd191af1e9c9ac8a272ed337f7200950c3d3dd4/uvicorn-0.24.0-py3-none-any.whl
+Collecting python-dotenv==1.0.0 (from -r requirements.txt (line 3))
+  Using cached https://files.pythonhosted.org/packages/44/2f/62ea1c8b593f4e093cc1a7768f0d46112107e790c3e478532329e434f00b/python_dotenv-1.0.0-py3-none-any.whl
+Collecting pydantic[email]==2.5.0 (from -r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/d7/10/ddfb9539a6e55f7dfd6c2b9b81d86fcba2761ba87eeb81f8b1012957dcdc/pydantic-2.5.0-py3-none-any.whl
+Requirement already satisfied: httpx==0.27.0 in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from -r requirements.txt (line 5)) (0.27.0)
+Collecting python-jose[cryptography] (from -r requirements.txt (line 6))
+  Using cached https://files.pythonhosted.org/packages/63/b0/2586ea6b6fd57a994ece0b56418cbe93fff0efb85e2c9eb6b0caf24a4e37/python_jose-3.4.0-py2.py3-none-any.whl
+Collecting passlib[bcrypt] (from -r requirements.txt (line 7))
+  Using cached https://files.pythonhosted.org/packages/3b/a4/ab6b7589382ca3df236e03faa71deac88cae040af60c071a78d254a62172/passlib-1.7.4-py2.py3-none-any.whl
+Collecting SQLAlchemy==2.0.48 (from -r requirements.txt (line 10))
+  Using cached https://files.pythonhosted.org/packages/4e/ce/c9d1193b2bd603c7f7ea644eeb9d76bb37d4b038c2d7b9fe9bc514277923/sqlalchemy-2.0.48-cp38-cp38-win32.whl
+Requirement already satisfied: aiosqlite in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from -r requirements.txt (line 11)) (0.20.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from fastapi==0.104.1->-r requirements.txt (line 1)) (4.13.2)
+Collecting anyio<4.0.0,>=3.7.1 (from fastapi==0.104.1->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/19/24/44299477fe7dcc9cb58d0a57d5a7588d6af2ff403fdd2d47a246c91a3246/anyio-3.7.1-py3-none-any.whl
+Collecting starlette<0.28.0,>=0.27.0 (from fastapi==0.104.1->-r requirements.txt (line 1))
+  Using cached https://files.pythonhosted.org/packages/58/f8/e2cca22387965584a409795913b774235752be4176d276714e15e1a58884/starlette-0.27.0-py3-none-any.whl
+Collecting click>=7.0 (from uvicorn==0.24.0->-r requirements.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/7e/d4/7ebdbd03970677812aac39c869717059dbb71a4cfc033ca6e5221787892c/click-8.1.8-py3-none-any.whl
+Requirement already satisfied: h11>=0.8 in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from uvicorn==0.24.0->-r requirements.txt (line 2)) (0.16.0)
+Collecting annotated-types>=0.4.0 (from pydantic[email]==2.5.0->-r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl
+Collecting pydantic-core==2.14.1 (from pydantic[email]==2.5.0->-r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/f3/96/aba75269e8f797696a6249ac63b7576e43459828f0170fa612180d069267/pydantic_core-2.14.1-cp38-none-win32.whl
+Collecting email-validator>=2.0.0; extra == "email" (from pydantic[email]==2.5.0->-r requirements.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/de/15/545e2b6cf2e3be84bc1ed85613edd75b8aea69807a71c26f4ca6a9258e82/email_validator-2.3.0-py3-none-any.whl
+Requirement already satisfied: idna in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from httpx==0.27.0->-r requirements.txt (line 5)) (3.11)
+Requirement already satisfied: certifi in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from httpx==0.27.0->-r requirements.txt (line 5)) (2026.2.25)
+Requirement already satisfied: sniffio in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from httpx==0.27.0->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: httpcore==1.* in c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages (from httpx==0.27.0->-r requirements.txt (line 5)) (1.0.9)
+Collecting rsa!=4.1.1,!=4.4,<5.0,>=4.0 (from python-jose[cryptography]->-r requirements.txt (line 6))
+  Using cached https://files.pythonhosted.org/packages/64/8d/0133e4eb4beed9e425d9a98ed6e081a55d195481b7632472be1af08d2f6b/rsa-4.9.1-py3-none-any.whl
+Collecting ecdsa!=0.15 (from python-jose[cryptography]->-r requirements.txt (line 6))
+  Using cached https://files.pythonhosted.org/packages/cb/a3/460c57f094a4a165c84a1341c373b0a4f5ec6ac244b998d5021aade89b77/ecdsa-0.19.1-py2.py3-none-any.whl
+Collecting pyasn1<0.5.0,>=0.4.1 (from python-jose[cryptography]->-r requirements.txt (line 6))
+  Using cached https://files.pythonhosted.org/packages/62/1e/a94a8d635fa3ce4cfc7f506003548d0a2447ae76fd5ca53932970fe3053f/pyasn1-0.4.8-py2.py3-none-any.whl
+Collecting cryptography>=3.4.0; extra == "cryptography" (from python-jose[cryptography]->-r requirements.txt (line 6))
+  Using cached https://files.pythonhosted.org/packages/60/04/ee2a9e8542e4fa2773b81771ff8349ff19cdd56b7258a0cc442639052edb/cryptography-46.0.5.tar.gz
+ERROR: Exception:
+Traceback (most recent call last):
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\cli\base_command.py", line 188, in main
+    status = self.run(options, args)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\commands\install.py", line 345, in run
+    resolver.resolve(requirement_set)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\legacy_resolve.py", line 196, in resolve
+    self._resolve_one(requirement_set, req)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\legacy_resolve.py", line 359, in _resolve_one
+    abstract_dist = self._get_abstract_dist_for(req_to_install)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\legacy_resolve.py", line 305, in _get_abstract_dist_for
+    abstract_dist = self.preparer.prepare_linked_requirement(
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\operations\prepare.py", line 214, in prepare_linked_requirement
+    abstract_dist.prepare_distribution_metadata(
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\distributions\source.py", line 30, in prepare_distribution_metadata
+    self.req.load_pyproject_toml()
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\req\req_install.py", line 501, in load_pyproject_toml
+    pyproject_toml_data = load_pyproject_toml(
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_internal\pyproject.py", line 66, in load_pyproject_toml
+    pp_toml = pytoml.load(f)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_vendor\pytoml\parser.py", line 11, in load
+    return loads(fin.read(), translate=translate, object_pairs_hook=object_pairs_hook, filename=getattr(fin, 'name', repr(fin)))
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_vendor\pytoml\parser.py", line 24, in loads
+    ast = _p_toml(src, object_pairs_hook=object_pairs_hook)
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_vendor\pytoml\parser.py", line 340, in _p_toml
+    s.expect_eof()
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_vendor\pytoml\parser.py", line 125, in expect_eof
+    return self._expect(self.consume_eof())
+  File "c:\users\tomas\downloads\kimi_agent_griidai referral program design (1)\backend\venv\lib\site-packages\pip\_vendor\pytoml\parser.py", line 165, in _expect
+    raise TomlError('msg', self._pos[0], self._pos[1], self._filename)
+pip._vendor.pytoml.core.TomlError: C:\Users\tomas\AppData\Local\Temp\pip-install-hwc74iv9\cryptography\pyproject.toml(185, 1): msg
+WARNING: You are using pip version 19.2.3, however version 25.0.1 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' command.

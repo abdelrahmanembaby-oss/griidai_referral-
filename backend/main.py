@@ -5,7 +5,7 @@ import uvicorn
 
 from app.core.config import settings
 from app.core.db import engine, Base
-from app.api import referral, auth, project, compute, imagery
+from app.api import referral, auth, project, compute, imagery, export, upload, gcs_files
 
 print("DATABASE_URL=", settings.DATABASE_URL)
 app = FastAPI(
@@ -29,6 +29,12 @@ app.include_router(referral.router, prefix=settings.API_PREFIX)
 app.include_router(project.router, prefix=settings.API_PREFIX)
 app.include_router(compute.router, prefix=settings.API_PREFIX)
 app.include_router(imagery.router, prefix=settings.API_PREFIX)
+app.include_router(export.router, prefix=settings.API_PREFIX)
+app.include_router(upload.router, prefix=settings.API_PREFIX)
+app.include_router(gcs_files.router, prefix=settings.API_PREFIX)
+
+from app.api import vector_layers
+app.include_router(vector_layers.router, prefix=settings.API_PREFIX)
 
 @app.on_event("startup")
 async def startup_event():

@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Map, MapPinOff } from 'lucide-react';
+import { MapCurtain } from '../components/MapCurtain';
+import { ShpUploadPanel } from '../components/ShpUploadPanel';
+import type { VectorLayer } from '../components/MapPanel';
 
 type Msg = { id: string; role: 'user' | 'ai'; text: string; ts: string };
 
 export function ChatHomePage() {
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [activeLayers, setActiveLayers] = useState<VectorLayer[]>([]);
 
   const canSend = value.trim().length > 0;
   const isEmpty = messages.length === 0;
@@ -34,9 +39,41 @@ export function ChatHomePage() {
 
   return (
     <div className="chat-main">
-      {/* Top bar with Show Map */}
+      {/* Top bar with Show/Hide Map */}
       <div className="chat-topbar">
-        <button className="chat-show-map-btn">Show Map</button>
+        <button
+          id="toggle-map-btn"
+          className={`chat-show-map-btn ${isMapOpen ? 'chat-show-map-btn--active' : ''}`}
+          onClick={() => setIsMapOpen((prev) => !prev)}
+        >
+          {isMapOpen ? (
+            <>
+              <MapPinOff size={15} />
+              Hide Map
+            </>
+          ) : (
+            <>
+              <Map size={15} />
+              Show Map
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Map + Upload Panel Area */}
+      <div className={`map-area-container ${isMapOpen ? 'map-area-container--open' : ''}`}>
+        <div style={{ flex: 1, position: 'relative' }}>
+          <MapCurtain isOpen={isMapOpen} layers={activeLayers} />
+        </div>
+        
+        {/* Upload Panel slides in from right when map is open */}
+        <div className={`upload-panel-container ${isMapOpen ? 'upload-panel-container--open' : ''}`}>
+          <ShpUploadPanel 
+            onLayerLoaded={(layer) => setActiveLayers(prev => [...prev, layer])}
+            onLayerRemoved={(id) => setActiveLayers(prev => prev.filter(l => l.id !== id))}
+            activeLayers={activeLayers}
+          />
+        </div>
       </div>
 
       {/* Messages area or empty state */}

@@ -8,6 +8,7 @@ import { ReferralModal } from '@/components/ReferralModal';
 import { ChatHomePage } from '@/pages/ChatHomePage';
 import { SignupPageNew } from '@/pages/SignupPageNew';
 import { EarthExplorerPage } from '@/pages/EarthExplorerPage';
+import OsmDownloader from '@/pages/OsmDownloader';
 
 function App() {
   const [referralOpen, setReferralOpen] = useState(false);
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<ChatHomePage />} />
             <Route path="/signup" element={<SignupPageNew />} />
             <Route path="/explorer" element={<EarthExplorerPage />} />
+            <Route path="/osm-downloader" element={<OsmDownloader />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

@@ -1,10 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from .user import UserOut
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 
@@ -15,4 +15,3 @@ class TokenResponse(BaseModel):
 
 class AuthResponse(TokenResponse):
     user: UserOut
-

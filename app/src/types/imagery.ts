@@ -12,6 +12,7 @@ export interface ImageryResult {
   };
   sensor: string;
   dataset: string;
+  provider: string;   // "usgs" | "copernicus"
 }
 
 export interface SearchFilters {
@@ -25,6 +26,8 @@ export interface SearchFilters {
   dataset?: string;
   maxResults?: number;
   startingNumber?: number;
+  provider?: string;      // "usgs" | "copernicus"
+  collection?: string;    // Copernicus collection name e.g. "SENTINEL-2"
 }
 
 export interface USGSSearchResponse {

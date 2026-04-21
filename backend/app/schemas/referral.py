@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class ReferralStatus(str, Enum):
@@ -25,9 +25,9 @@ class ReferralOut(BaseModel):
     referred_user_id: str
     status: ReferralStatus
     reward_granted: bool
-    reward_type: Optional[str]
+    reward_type: Optional[str] = None
     created_at: datetime
-    qualified_at: Optional[datetime]
+    qualified_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True

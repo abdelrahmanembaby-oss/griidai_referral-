@@ -1,0 +1,6 @@
+
+--- Reading griidai_frontend_plan.docx ---
+Error reading griidai_frontend_plan.docx: 'charmap' codec can't encode character '\u2192' in position 3666: character maps to <undefined>
+
+--- Reading griidai_backend_plan.docx ---
+Error reading griidai_backend_plan.docx: 'charmap' codec can't encode character '\u2192' in position 1079: character maps to <undefined>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, MoreHorizontal, Settings, Copy, Globe } from 'lucide-react';
+import { Plus, MoreHorizontal, Settings, Copy, Globe, Map, ChevronDown } from 'lucide-react';
 
 type SidebarProps = {
   onOpenReferral: () => void;
@@ -12,6 +12,10 @@ export function Sidebar({ onOpenReferral }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const isExplorer = location.pathname === '/explorer';
+  const isOsmDownloader = location.pathname === '/osm-downloader';
+  
+  const [isExplorersOpen, setIsExplorersOpen] = useState(isExplorer || isOsmDownloader);
+  
   const [sessions] = useState([
     { id: '1', title: 'New Session', active: true },
     { id: '2', title: 'New Session', active: false },
@@ -36,16 +40,48 @@ export function Sidebar({ onOpenReferral }: SidebarProps) {
         </button>
       </div>
 
-      {/* New Chat */}
-      {/* Earth Explorer */}
+      {/* Explorers Dropdown */}
       <button
-        className={`sidebar-new-chat ${isExplorer ? 'sidebar-new-chat--active' : ''}`}
-        onClick={() => navigate(isExplorer ? '/' : '/explorer')}
-        style={isExplorer ? { borderColor: 'var(--griid-teal)', color: 'var(--griid-teal)', background: 'var(--griid-teal-glow)' } : {}}
+        className={`sidebar-new-chat ${(isExplorer || isOsmDownloader) && !isExplorersOpen ? 'sidebar-new-chat--active' : ''}`}
+        onClick={() => setIsExplorersOpen(!isExplorersOpen)}
       >
         <Globe size={16} />
-        <span>{isExplorer ? 'Back to Chat' : 'Earth Explorer'}</span>
+        <span>Data Explorers</span>
+        <ChevronDown 
+          size={16} 
+          style={{ marginLeft: 'auto', transition: 'transform 0.2s', transform: isExplorersOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} 
+        />
       </button>
+
+      {isExplorersOpen && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', paddingLeft: '0.25rem', paddingRight: '0.25rem' }} className="animate-in slide-in-from-top-2 duration-200">
+          <button
+            className={`sidebar-new-chat ${isExplorer ? 'sidebar-new-chat--active' : ''}`}
+            onClick={() => navigate(isExplorer ? '/' : '/explorer')}
+            style={{ 
+              ...(isExplorer ? { borderColor: 'var(--griid-teal)', color: 'var(--griid-teal)', background: 'var(--griid-teal-glow)' } : {}),
+              padding: '0.5rem 0.75rem', 
+              fontSize: '0.85rem'
+            }}
+          >
+            <Globe size={15} />
+            <span>{isExplorer ? 'Back to Chat' : 'Earth Explorer'}</span>
+          </button>
+
+          <button
+            className={`sidebar-new-chat ${isOsmDownloader ? 'sidebar-new-chat--active' : ''}`}
+            onClick={() => navigate(isOsmDownloader ? '/' : '/osm-downloader')}
+            style={{ 
+              ...(isOsmDownloader ? { borderColor: 'var(--griid-teal)', color: 'var(--griid-teal)', background: 'var(--griid-teal-glow)' } : {}),
+              padding: '0.5rem 0.75rem', 
+              fontSize: '0.85rem'
+            }}
+          >
+            <Map size={15} />
+            <span>{isOsmDownloader ? 'Back to Chat' : 'OSM Vector Data'}</span>
+          </button>
+        </div>
+      )}
 
       {/* New Chat */}
       <button className="sidebar-new-chat">
